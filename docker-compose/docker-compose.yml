@@ -63,5 +63,3 @@ services:
           memory: 500m
         limits:
           memory: 1g
-      restart_policy:
-        condition: any
