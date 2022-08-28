@@ -68,6 +68,6 @@ echo "Monitoring directory prepared: ${MON_DIR}"
 
 
 cd $MON_DIR/compose-files
-# docker-compose up -d
-docker stack deploy -c ./docker-compose.yml pan_grafana_monitoring
+docker compose up -d
+# docker stack deploy -c ./docker-compose.yml pan_grafana_monitoring
 exit 0

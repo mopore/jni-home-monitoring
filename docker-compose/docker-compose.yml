@@ -17,14 +17,13 @@ services:
     environment:
       - INFLUXDB_ADMIN_USER=admin
       - INFLUXDB_ADMIN_PASSWORD=admin
+    restart: unless-stopped
     deploy:
       resources:
-        reservations:
-          memory: 500m
         limits:
-          memory: 2g
-      restart_policy:
-        condition: any
+          memory: 2G
+        reservations:
+          memory: 500M
   telegraf:
     image: telegraf:latest
     networks: 
@@ -33,14 +32,13 @@ services:
       - /usr/local/pan-monitoring/influxdb/telegraf.conf:/etc/telegraf/telegraf.conf:ro
       - /sys/class/thermal/thermal_zone0/temp:/etc/telegraf/temperature:ro
       - /usr/local/pan-pi/reports:/var/reports-input
-    deploy:      
+    restart: unless-stopped
+    deploy:
       resources:
-        reservations:
-          memory: 500m
         limits:
-          memory: 1g
-      restart_policy:
-        condition: any
+          memory: 1G
+        reservations:
+          memory: 500M
   grafana:
     image: grafana/grafana:latest
     networks:
@@ -58,7 +56,8 @@ services:
       - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin
-    deploy:
+    restart: unless-stopped
+    deploy:      
       resources:
         reservations:
           memory: 500m
