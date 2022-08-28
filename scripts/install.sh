@@ -26,7 +26,7 @@ mkdir -p $MON_DIR/grafana/data
 mkdir -p $MON_DIR/grafana/provisioning/datasources
 mkdir -p $MON_DIR/grafana/provisioning/plugins
 mkdir -p $MON_DIR/grafana/provisioning/notifiers
-# mkdir -p $MON_DIR/grafana/provisioning/dashboards
+mkdir -p $MON_DIR/grafana/provisioning/dashboards
 chown 472:472 $MON_DIR/grafana/data
 
 echo "Copying files..."
@@ -40,7 +40,7 @@ cp ../docker-compose/docker-compose.yml $MON_DIR/compose-files
 cp ../grafana/provisioning/datasources/datasource.yaml $MON_DIR/grafana/provisioning/datasources
 sed -i 's/XXXXX/'${TELEGRAF_PWD}'/g' $MON_DIR/grafana/provisioning/datasources/datasource.yaml
 sed -i 's/IIIII/'${LOCAL_IP_ADDRESS}'/g' $MON_DIR/grafana/provisioning/datasources/datasource.yaml
-# cp ../grafana/provisioning/dashboards/* $MON_DIR/grafana/provisioning/dashboards
+cp ../grafana/provisioning/dashboards/* $MON_DIR/grafana/provisioning/dashboards
 
 echo "Creating files..."
 cd $MON_DIR/influxdb
