@@ -8,7 +8,8 @@ fi
 MON_DIR=/usr/local/pan-monitoring
 
 cd $MON_DIR/compose-files
-docker stack rm pan_grafana_monitoring
+# docker stack rm pan_grafana_monitoring
+docker compose down
 
 rm -rf $MON_DIR
 echo "All is cleared in: $MON_DIR"
