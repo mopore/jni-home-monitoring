@@ -16,7 +16,7 @@ TELEGRAF_PWD=admin
 
 HOSTNAME=$(hostname)
 echo "Hostname is: ${HOSTNAME}"
-MON_DIR=/usr/local/pan-monitoring
+MON_DIR=/usr/local/jni-home-monitoring
 
 echo "Creating directories..."
 mkdir -p $MON_DIR/influxdb/data
@@ -26,7 +26,7 @@ mkdir -p $MON_DIR/grafana/data
 mkdir -p $MON_DIR/grafana/provisioning/datasources
 mkdir -p $MON_DIR/grafana/provisioning/plugins
 mkdir -p $MON_DIR/grafana/provisioning/notifiers
-mkdir -p $MON_DIR/grafana/provisioning/dashboards
+# mkdir -p $MON_DIR/grafana/provisioning/dashboards
 chown 472:472 $MON_DIR/grafana/data
 
 echo "Copying files..."
@@ -40,7 +40,7 @@ cp ../docker-compose/docker-compose.yml $MON_DIR/compose-files
 cp ../grafana/provisioning/datasources/datasource.yaml $MON_DIR/grafana/provisioning/datasources
 sed -i 's/XXXXX/'${TELEGRAF_PWD}'/g' $MON_DIR/grafana/provisioning/datasources/datasource.yaml
 sed -i 's/IIIII/'${LOCAL_IP_ADDRESS}'/g' $MON_DIR/grafana/provisioning/datasources/datasource.yaml
-cp ../grafana/provisioning/dashboards/* $MON_DIR/grafana/provisioning/dashboards
+# cp ../grafana/provisioning/dashboards/* $MON_DIR/grafana/provisioning/dashboards
 
 echo "Creating files..."
 cd $MON_DIR/influxdb
@@ -52,7 +52,7 @@ sed -i 's/^  auth-enabled = false$/  auth-enabled = true/g' influxdb.conf
 
 docker run --rm telegraf telegraf config > telegraf.conf
 # now modify it to tell it how to authenticate against influxdb
-sed -i 's/^  # urls = \["http:\/\/127\.0\.0\.1:8086"\]$/  urls = \["http:\/\/influxdb:8086"\]/g' telegraf.conf
+sed -i 's/^  # urls = \["http:\/\/127\.0\.0\.1:8086"\]$/  urls = \["http:\/\/${LOCAL_IP_ADDRESS}:8086"\]/g' telegraf.conf
 sed -i 's/^  # database = "telegraf"$/  database = "telegraf"/' telegraf.conf
 sed -i 's/^  # username = "telegraf"$/  username = "telegraf"/' telegraf.conf
 sed -i 's/^  # password = "metricsmetricsmetricsmetrics"$/  password = "'${TELEGRAF_PWD}'"/' telegraf.conf

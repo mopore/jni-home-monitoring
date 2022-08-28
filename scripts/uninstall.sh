@@ -5,7 +5,7 @@ if (( $EUID != 0 )); then
     exit 1
 fi
 
-MON_DIR=/usr/local/pan-monitoring
+MON_DIR=/usr/local/jni-home-monitoring
 
 cd $MON_DIR/compose-files
 # docker stack rm pan_grafana_monitoring
