@@ -1,0 +1,68 @@
+version: "3"
+
+networks:
+  metrics:
+
+services:
+  influxdb:
+    image: influxdb:1.8
+    networks: 
+      - metrics
+    ports:
+      - "8086:8086"
+    volumes:
+      - /usr/local/pan-monitoring/influxdb/data:/var/lib/influxdb
+      - /usr/local/pan-monitoring/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro
+      - /usr/local/pan-monitoring/influxdb/init:/docker-entrypoint-initdb.d
+    environment:
+      - INFLUXDB_ADMIN_USER=admin
+      - INFLUXDB_ADMIN_PASSWORD=admin
+    deploy:
+      resources:
+        reservations:
+          memory: 500m
+        limits:
+          memory: 2g
+      restart_policy:
+        condition: any
+  telegraf:
+    image: telegraf:latest
+    networks: 
+      - metrics
+    volumes:
+      - /usr/local/pan-monitoring/influxdb/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+      - /sys/class/thermal/thermal_zone0/temp:/etc/telegraf/temperature:ro
+      - /usr/local/pan-pi/reports:/var/reports-input
+    deploy:      
+      resources:
+        reservations:
+          memory: 500m
+        limits:
+          memory: 1g
+      restart_policy:
+        condition: any
+  grafana:
+    image: grafana/grafana:latest
+    networks:
+      - metrics
+    # user: "1000" # needs to be `id -u` // alternatively chown the grafana/data dir to 472:472
+    ports:
+      - "3000:3000" # expose for localhost
+    depends_on: 
+      - influxdb
+    volumes:
+      - /usr/local/pan-monitoring/grafana/data:/var/lib/grafana # data path
+      - /usr/local/pan-monitoring/grafana/grafana.ini:/etc/grafana/grafana.ini
+      - /usr/local/pan-monitoring/grafana/provisioning:/etc/grafana/provisioning
+    environment:
+      - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    deploy:
+      resources:
+        reservations:
+          memory: 500m
+        limits:
+          memory: 1g
+      restart_policy:
+        condition: any
