@@ -11,9 +11,9 @@ services:
     ports:
       - "8086:8086"
     volumes:
-      - /usr/local/pan-monitoring/influxdb/data:/var/lib/influxdb
-      - /usr/local/pan-monitoring/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro
-      - /usr/local/pan-monitoring/influxdb/init:/docker-entrypoint-initdb.d
+      - /usr/local/jni-home-monitoring/influxdb/data:/var/lib/influxdb
+      - /usr/local/jni-home-monitoring/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro
+      - /usr/local/jni-home-monitoring/influxdb/init:/docker-entrypoint-initdb.d
     environment:
       - INFLUXDB_ADMIN_USER=admin
       - INFLUXDB_ADMIN_PASSWORD=admin
@@ -29,7 +29,7 @@ services:
     networks: 
       - metrics
     volumes:
-      - /usr/local/pan-monitoring/influxdb/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+      - /usr/local/jni-home-monitoring/influxdb/telegraf.conf:/etc/telegraf/telegraf.conf:ro
       - /sys/class/thermal/thermal_zone0/temp:/etc/telegraf/temperature:ro
       - /usr/local/pan-pi/reports:/var/reports-input
     restart: unless-stopped
@@ -49,9 +49,9 @@ services:
     depends_on: 
       - influxdb
     volumes:
-      - /usr/local/pan-monitoring/grafana/data:/var/lib/grafana # data path
-      - /usr/local/pan-monitoring/grafana/grafana.ini:/etc/grafana/grafana.ini
-      - /usr/local/pan-monitoring/grafana/provisioning:/etc/grafana/provisioning
+      - /usr/local/jni-home-monitoring/grafana/data:/var/lib/grafana # data path
+      - /usr/local/jni-home-monitoring/grafana/grafana.ini:/etc/grafana/grafana.ini
+      - /usr/local/jni-home-monitoring/grafana/provisioning:/etc/grafana/provisioning
     environment:
       - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource
       - GF_SECURITY_ADMIN_USER=admin
