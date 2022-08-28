@@ -52,7 +52,8 @@ sed -i 's/^  auth-enabled = false$/  auth-enabled = true/g' influxdb.conf
 
 docker run --rm telegraf telegraf config > telegraf.conf
 # now modify it to tell it how to authenticate against influxdb
-sed -i 's/^  # urls = \["http:\/\/127\.0\.0\.1:8086"\]$/  urls = \["http:\/\/'${LOCAL_IP_ADDRESS}':8086"\]/g' telegraf.conf
+# sed -i 's/^  # urls = \["http:\/\/127\.0\.0\.1:8086"\]$/  urls = \["http:\/\/'${LOCAL_IP_ADDRESS}':8086"\]/g' telegraf.conf
+sed -i 's/^  # urls = \["http:\/\/127\.0\.0\.1:8086"\]$/  urls = \["http:\/\/compose-files-telegraf-1:8086"\]/g' telegraf.conf
 sed -i 's/^  # database = "telegraf"$/  database = "telegraf"/' telegraf.conf
 sed -i 's/^  # username = "telegraf"$/  username = "telegraf"/' telegraf.conf
 sed -i 's/^  # password = "metricsmetricsmetricsmetrics"$/  password = "'${TELEGRAF_PWD}'"/' telegraf.conf
