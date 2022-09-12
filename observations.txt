@@ -1,0 +1,18 @@
+Observations vor "Living TV"
+
+
+Time		Lights		Shades		Light Value
+8.30 h		Off			Closed		15
+8.32 h		On			Closed		26
+8.38 h		On			Open		1860	
+8.51 h		Off			Open		804
+8.54 h		Off			Closed		41.5
+8.55 h		On			Closed		50.9
+8.57 h		Off			Closed		39.6
+
+Not under 55 Lm with day light
+
+
+Afternoon	Off			Half Open	150
+			Off			All Closed	2
+			Off			Half Open	100
